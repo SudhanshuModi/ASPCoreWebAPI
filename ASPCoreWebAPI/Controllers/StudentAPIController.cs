@@ -17,16 +17,16 @@ namespace ASPCoreWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Student>>> GetStudents()
+        public ActionResult<List<Student>> GetStudents()
         {
-            var data = await studentDB.Students.ToListAsync();
+            var data = studentDB.Students.ToList();
             return Ok(data);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudentById(int id)
+        public ActionResult<Student> GetStudentById(int id)
         {
-            var student = await studentDB.Students.FindAsync(id);
+            var student = studentDB.Students.Find(id);
             if(student == null)
             {
                 return NotFound();
@@ -35,35 +35,35 @@ namespace ASPCoreWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Student>> CreateStudent(Student std)
+        public ActionResult<Student> CreateStudent(Student std)
         {
-            await studentDB.Students.AddAsync(std);
-            await studentDB.SaveChangesAsync();
+            studentDB.Students.Add(std);
+            studentDB.SaveChanges();
             return Ok(std);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Student>> UpdateStudent(int id, Student std)
+        public ActionResult<Student> UpdateStudent(int id, Student std)
         {
             if(id != std.Id)
             {
                 return BadRequest();
             }
             studentDB.Entry(std).State = EntityState.Modified;
-            await studentDB.SaveChangesAsync();
+            studentDB.SaveChanges();
             return Ok(std);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Student>> DeleteStudent(int id)
+        public ActionResult<Student> DeleteStudent(int id)
         {
-            var std = await studentDB.Students.FindAsync(id);
+            var std = studentDB.Students.Find(id);
             if (std == null)
             {
                 return NotFound();
             }
             studentDB.Remove(std);
-            await studentDB.SaveChangesAsync();
+            studentDB.SaveChanges();
             return Ok(std);
         }
 
